@@ -26,13 +26,14 @@ def contato(request):
     return HttpResponse('contato')
 
 
-def sobre(request):
-    return HttpResponse('sobre')
+def veja(request):
+    return HttpResponse('veja')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HOME),
     path('contato', contato),
-    path('sobre', sobre),
+    path('veja', veja),
+
 ]
