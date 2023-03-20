@@ -102,8 +102,7 @@
   .search-button {
     position: absolute;
     top: 0;
-    right: 0;´(--color-primary);
-    background: rgba(0, 0, 0, 0.05);
+    right: 0;
   }
   .search-form:focus-within {
     border-color: var(--color-primary);
