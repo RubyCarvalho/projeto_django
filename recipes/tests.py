@@ -9,4 +9,4 @@ class RecipeURLsTest(TestCase):
 
 
 class RecipeViewsTest(TestCase):
-    
+    ...
