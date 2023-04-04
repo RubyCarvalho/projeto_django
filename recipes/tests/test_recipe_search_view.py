@@ -30,7 +30,7 @@ class RecipeSearchViewTest(RecipeTestBase):
             response.content.decode('utf-8')
         )
 
-    `def test_recipe_search_can_find_recipe_by_title(self):
+    def test_recipe_search_can_find_recipe_by_title(self):
         title1 = 'This is recipe one'
         title2 = 'This is recipe two'
 
