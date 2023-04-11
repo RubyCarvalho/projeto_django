@@ -48,3 +48,9 @@ def make_pagination(request, queryset, per_page, qty_pages=4):
     )
 
     return page_obj, pagination_range
+
+# Gera SECRET KEY, ('for settings')
+# python -c
+# "import string as s;from random import SystemRandom as
+# sr;print(''.join(sr().choices(s.ascii_letters +
+# s.punctuation, k=64)))"
