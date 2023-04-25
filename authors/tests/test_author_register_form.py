@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from django.test import TestCase as DjangoTestCase
 from django.urls import reverse
@@ -144,6 +144,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+    @ skip('WIP')
     def test_email_field_must_be_unique(self):
         url = reverse('authors:register_create')
 

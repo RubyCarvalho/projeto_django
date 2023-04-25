@@ -46,7 +46,7 @@ class RecipeDetailViewTest(RecipeTestBase):
             reverse(
                 'recipes:recipe',
                 kwargs={
-                    'id': recipe.id
+                    'id': recipe.id  # type: ignore
                 }
             )
         )
