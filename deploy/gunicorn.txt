@@ -1,0 +1,75 @@
+###############################################################################
+# Replace
+# iniciando_django to the name of the gunicorn file you want
+# __YOUR_USER__ to your user name
+# __PROJECT_FOLDER__ to the folder name of your project
+# __WSGI_FOLDER__ to the folder name where you find a file called wsgi.py
+#
+###############################################################################
+# Criando o arquivo iniciando_django.socket
+sudo nano /etc/systemd/system/iniciando_django.socket
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=gunicorn blog socket
+
+[Socket]
+ListenStream=/run/iniciando_django.socket
+
+[Install]
+WantedBy=sockets.target
+
+###############################################################################
+# Criando o arquivo iniciando_django.service
+sudo nano /etc/systemd/system/iniciando_django.service
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=Gunicorn daemon (You can change if you want)
+Requires=iniciando_django.socket
+After=network.target
+
+[Service]
+User=__YOUR_USER__
+Group=www-data
+Restart=on-failure
+EnvironmentFile=/home/__YOUR_USER__/__PROJECT_FOLDER__/.env
+WorkingDirectory=/home/__YOUR_USER__/__PROJECT_FOLDER__
+# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
+# are all for debugging purposes.
+ExecStart=/home/__YOUR_USER__/__PROJECT_FOLDER__/venv/bin/gunicorn \
+          --error-logfile /home/__YOUR_USER__/__PROJECT_FOLDER__/gunicorn-error-log \
+          --enable-stdio-inheritance \
+          --log-level "debug" \
+          --capture-output \
+          --access-logfile - \
+          --workers 6 \
+          --bind unix:/run/iniciando_django.socket \
+          __WSGI_FOLDER__.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+###############################################################################
+# Ativando
+sudo systemctl start iniciando_django.socket
+sudo systemctl enable iniciando_django.socket
+
+# Checando
+sudo systemctl status iniciando_django.socket
+curl --unix-socket /run/iniciando_django.socket localhost
+sudo systemctl status iniciando_django
+
+# Restarting
+sudo systemctl restart iniciando_django.service
+sudo systemctl restart iniciando_django.socket
+sudo systemctl restart iniciando_django
+
+# After changing something
+sudo systemctl daemon-reload
+
+# Debugging
+sudo journalctl -u iniciando_django.service
+sudo journalctl -u iniciando_django.socket
