@@ -1,15 +1,31 @@
 import os
 
 from django.db.models import Q
+from django.db.models.aggregates import Count
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.http.response import Http404
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 
 from recipes.models import Recipe
 from utils.pagination import make_pagination
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
+
+
+def theory(request, *args, **kwargs):
+    recipes = Recipe.objects.get_published()
+    number_of_recipes = recipes.aggregate(number=Count('id'))
+    context = {
+        'recipes': recipes,
+        'number_of_recipes': number_of_recipes['number']
+    }
+    return render(
+        request,
+        'recipes/pages/theory.html',
+        context=context
+    )
 
 
 class RecipeListViewBase(ListView):
@@ -23,6 +39,7 @@ class RecipeListViewBase(ListView):
         qs = qs.filter(
             is_published=True,
         )
+        qs = qs.select_related('author', 'category')
         return qs
 
     def get_context_data(self, *args, **kwargs):
