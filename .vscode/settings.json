@@ -8,7 +8,7 @@
     "python.linting.mypyEnabled": true,
     "python.linting.pylintArgs": [
       "--load-plugins=pylint_django",
-      "--errors-only"
+      "--errors-only",
     ],
     "python.formatting.autopep8Args": ["--indent-size=4"],
     "python.defaultInterpreterPath": "venv/bin/python",
